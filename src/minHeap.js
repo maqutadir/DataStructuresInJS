@@ -1,11 +1,11 @@
-class MinHeap {
+class minHeap {
   constructor() {
-    this.size = 0;
-    this.storage = [];
+    this.len = 0;
+    this.heap = [];
   }
 
   getHeap() {
-    return this.storage;
+    return this.heap;
   }
 
   getLeftChildIndex(index) {
@@ -21,11 +21,11 @@ class MinHeap {
   }
 
   hasLeftChild(index) {
-    return this.getLeftChildIndex(index) < this.size;
+    return this.getLeftChildIndex(index) < this.len;
   }
 
   hasRightChild(index) {
-    return this.getRightChildIndex(index) < this.size;
+    return this.getRightChildIndex(index) < this.len;
   }
 
   hasParent(index) {
@@ -33,44 +33,47 @@ class MinHeap {
   }
 
   leftChild(index) {
-    return this.storage[this.getLeftChildIndex(index)];
+    return this.heap[this.getLeftChildIndex(index)];
   }
 
   rightChild(index) {
-    return this.storage[this.getRightChildIndex(index)];
+    return this.heap[this.getRightChildIndex(index)];
   }
 
   parent(index) {
-    return this.storage[this.getParentIndex(index)];
-  }
-
-  isFull() {
-    return this.size == this.capacity;
+    return this.heap[this.getParentIndex(index)];
   }
 
   swap(index1, index2) {
-    [this.storage[index1], this.storage[index2]] = [
-      this.storage[index2],
-      this.storage[index1]
+    [this.heap[index1], this.heap[index2]] = [
+      this.heap[index2],
+      this.heap[index1]
     ];
   }
 
   removeMin() {
-    if (this.size === 0) throw new Error("Empty Heap");
-    let data = this.storage[0];
-    this.storage[0] = this.storage[this.size - 1];
-    this.size--;
+    if (this.len === 0) throw new Error("Empty heap");
+    let min = this.heap[0];
+    console.log("here is the heap", this.heap);
+    this.heap[0] = this.heap[this.len - 1];
+    this.len--;
     this.heapifyDown(0);
-    return data;
+    return min;
+  }
+
+  add(data) {
+    this.heap[this.len] = data;
+    this.len++;
+    this.heapifyUp(this.len - 1);
   }
 
   heapifyDown(index) {
     let smallest = index;
-    if (this.hasLeftChild(index) && this.storage[index] > this.leftChild(index))
+    if (this.hasLeftChild(index) && this.heap[smallest] > this.leftChild(index))
       smallest = this.getLeftChildIndex(index);
     if (
       this.hasRightChild(index) &&
-      this.storage[smallest] > this.rightChild(index)
+      this.heap[smallest] > this.rightChild(index)
     )
       smallest = this.getRightChildIndex(index);
     if (smallest !== index) {
@@ -79,21 +82,15 @@ class MinHeap {
     }
   }
 
-  add(data) {
-    this.storage[this.size] = data;
-    this.size++;
-    this.heapifyUp(this.size - 1);
-  }
-
   heapifyUp(index) {
-    if (this.hasParent(index) && this.parent(index) > this.storage[index]) {
-      this.swap(this.getParentIndex(index), index);
+    if (this.hasParent(index) && this.heap[index] < this.parent(index)) {
+      this.swap(index, this.getParentIndex(index));
       this.heapifyUp(this.getParentIndex(index));
     }
   }
 }
 
-let minHeap1 = new MinHeap();
+let minHeap1 = new minHeap();
 
 console.log("The min heap is", minHeap1.getHeap());
 minHeap1.add(15);
@@ -106,6 +103,7 @@ minHeap1.add(3);
 console.log("The min heap is", minHeap1.getHeap());
 minHeap1.add(22);
 console.log("The min heap is", minHeap1.getHeap());
+minHeap1.add(99);
 
 console.log("The min heap is", minHeap1.getHeap());
 
@@ -118,4 +116,13 @@ minHeap1.add(-22);
 console.log("The min heap is", minHeap1.getHeap());
 
 console.log("The min heap is", minHeap1.getHeap());
-console.log(minHeap1.removeMin(), minHeap1.removeMin(), minHeap1.removeMin());
+console.log(
+  minHeap1.removeMin(),
+  minHeap1.removeMin(),
+  minHeap1.removeMin(),
+  minHeap1.removeMin(),
+  minHeap1.removeMin(),
+  minHeap1.removeMin(),
+  minHeap1.removeMin(),
+  minHeap1.removeMin()
+);
