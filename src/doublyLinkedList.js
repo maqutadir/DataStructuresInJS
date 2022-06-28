@@ -43,7 +43,8 @@ class Dll {
     return this.head;
   }
 
-  remove(index) {
+  //remove node instead of index
+  remove(node) {
     if (index < 0 || index > this.len) return;
 
     if (index === 0) {
@@ -52,11 +53,12 @@ class Dll {
         this.head = null;
         this.tail = null;
       } else {
-        this.len--;
+        console.log("this is", this);
         this.next.prev = null;
 
         this.head.next = null;
         this.head = this.next;
+        this.len--;
       }
     } else if (index === this.len - 1) {
       this.tail = this.prev;
@@ -70,14 +72,16 @@ class Dll {
     return this.head;
   }
 
-  getValue(index) {
+  getValue(node) {
+    /*
     if (index < 0 || index > this.len) return null;
     let i = 0;
     let dummy = this.head;
     while (i <= index) {
       this.dummy = this.dummy.next;
     }
-    return this.dummy.value;
+    */
+    return node.next;
   }
 }
 
@@ -94,4 +98,4 @@ console.log(
   dll.insert(8, 2),
   dll
 );
-console.log("After removal", dll.remove(1));
+console.log("After removal", dll.getValue(new Node(5)));
